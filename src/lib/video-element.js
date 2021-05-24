@@ -13,7 +13,6 @@ import Player from './player';
 export default class VideoElement {
   constructor(
     wrapper,
-    videoUrl,
     {
       canvas = '',
       poster = '',
@@ -31,7 +30,6 @@ export default class VideoElement {
   ) {
     this.options = Object.assign(
       {
-        videoUrl,
         canvas,
         poster,
         picMode,
@@ -105,7 +103,7 @@ export default class VideoElement {
     });
 
     // Create the player instance
-    this.player = new Player(this.options.videoUrl, _options, {
+    this.player = new Player(_options, {
       play: () => {
         if (this.options.needPlayButton) {
           this.els.playButton.classList.add(_style.hidden);

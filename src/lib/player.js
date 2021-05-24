@@ -1,7 +1,8 @@
 import { Now, Base64ToArrayBuffer } from '../utils';
 
+/* 
 import AjaxSource from './ajax';
-import AjaxProgressiveSource from './ajax-progressive';
+import AjaxProgressiveSource from './ajax-progressive'; */
 import WSSource from './websocket';
 import TS from './ts';
 import MPEG1 from './mpeg1';
@@ -21,7 +22,7 @@ export default class Player {
    * @param hooks (play: function, pause: function, stop: function) 插入UI回调
    * @constructor
    */
-  constructor(url, options = {}, hooks = {}) {
+  constructor(options = {}, hooks = {}) {
     this.options = options;
 
     this.hooks = hooks;
@@ -31,20 +32,8 @@ export default class Player {
       }
     };
 
-    if (options.source) {
-      // eslint-disable-next-line new-cap
-      this.source = new options.source(url, this.options);
-      options.streaming = !!this.source.streaming;
-    } else if (url.match(/^wss?:\/\//)) {
-      this.source = new WSSource(url, this.options);
-      options.streaming = true;
-    } else if (options.progressive) {
-      this.source = new AjaxProgressiveSource(url, this.options);
-      options.streaming = false;
-    } else {
-      this.source = new AjaxSource(url, this.options);
-      options.streaming = false;
-    }
+    this.source = new WSSource(this.options);
+    options.streaming = true;
 
     this.maxAudioLag = options.maxAudioLag || 0.25;
     this.loop = options.loop !== false;
